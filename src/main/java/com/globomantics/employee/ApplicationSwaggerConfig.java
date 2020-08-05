@@ -14,25 +14,46 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-//@EnableWebMvc
-//@Import(SpringDataRestConfiguration.class)
-//@Import({SpringDataRestConfiguration.class, BeanValidatorPluginsConfiguration.class})
+// @Import({SpringDataRestConfiguration.class, BeanValidatorPluginsConfiguration.class})
 public class ApplicationSwaggerConfig {
 
-	@Bean
-	public Docket employeeApi() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.select()
-				.apis(RequestHandlerSelectors.any())
-				.paths(PathSelectors.any())
-				.build()
-                .apiInfo(getApiInfo());
-	}
+    @Bean
+    public Docket employeeApi1() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("employee-api-v1")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.globomantics.employee"))
+                .paths(PathSelectors.ant("/employeev1/**"))
+                .build()
+                .apiInfo(getApiInfo("v1"));
+    }
 
-    private ApiInfo getApiInfo() {
+    @Bean
+    public Docket employeeApi2() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("employee-api-v2")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.globomantics.employee"))
+                .paths(PathSelectors.ant("/employeev2/**"))
+                .build()
+                .apiInfo(getApiInfo("v2"));
+    }
+
+    @Bean
+    public Docket employeeApi3() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("employee-api-v3")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.globomantics.employee"))
+                .paths(PathSelectors.ant("/employeev3/**"))
+                .build()
+                .apiInfo(getApiInfo("v3"));
+    }
+
+    private ApiInfo getApiInfo(String version) {
         return new ApiInfoBuilder()
                 .title("Employee API")
-                .version("1.0")
+                .version(version)
                 .description("API for managing employees.")
                 .contact(new Contact("Ousama EL IDRISSI", "http://globomantics.com", "oelidrissi@globomantics.com"))
                 .license("Apache License Version 2.0")
